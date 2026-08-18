@@ -1,10 +1,3 @@
-import type { ApiConfig } from '../types/reddit';
-
-const AUTH_CONFIG_KEY = 'reddit_oauth_config';
-const ACCESS_TOKEN_KEY = 'reddit_access_token';
-const REFRESH_TOKEN_KEY = 'reddit_refresh_token';
-const TOKEN_EXPIRY_KEY = 'reddit_token_expiry';
-
 export interface OAuthConfig {
   clientId: string;
   clientSecret: string;
@@ -17,6 +10,11 @@ export interface AuthToken {
   expiresAt: number;
   username?: string;
 }
+
+const AUTH_CONFIG_KEY = 'reddit_oauth_config';
+const ACCESS_TOKEN_KEY = 'reddit_access_token';
+const REFRESH_TOKEN_KEY = 'reddit_refresh_token';
+const TOKEN_EXPIRY_KEY = 'reddit_token_expiry';
 
 export function getOAuthConfig(): OAuthConfig | null {
   try {
@@ -83,7 +81,7 @@ export async function exchangeCodeForToken(
   code: string,
   config: OAuthConfig
 ): Promise<AuthToken> {
-  const auth = Buffer.from(`${config.clientId}:${config.clientSecret}`).toString('base64');
+  const auth = btoa(`${config.clientId}:${config.clientSecret}`);
 
   const response = await fetch('https://www.reddit.com/api/v1/access_token', {
     method: 'POST',
@@ -115,7 +113,7 @@ export async function refreshAccessToken(
   config: OAuthConfig,
   refreshToken: string
 ): Promise<AuthToken> {
-  const auth = Buffer.from(`${config.clientId}:${config.clientSecret}`).toString('base64');
+  const auth = btoa(`${config.clientId}:${config.clientSecret}`);
 
   const response = await fetch('https://www.reddit.com/api/v1/access_token', {
     method: 'POST',
@@ -162,7 +160,6 @@ function generateState(): string {
   return Math.random().toString(36).substring(2, 15);
 }
 
-export function validateState(state: string): boolean {
-  // In production, store state in sessionStorage and compare
+export function validateState(): boolean {
   return true;
 }

@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import type { AuthToken, OAuthConfig } from '../services/authService';
 import {
   getStoredAuthToken,
   saveAuthToken,
   clearAuthToken,
-  getOAuthConfig,
   getCurrentUser
 } from '../services/authService';
 
@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const login = async (config: OAuthConfig, newToken: AuthToken) => {
+  const login = async (_config: OAuthConfig, newToken: AuthToken) => {
     saveAuthToken(newToken);
     setToken(newToken);
     await fetchUsername(newToken.accessToken);

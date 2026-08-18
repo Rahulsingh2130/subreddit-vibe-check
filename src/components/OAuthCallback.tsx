@@ -13,7 +13,6 @@ export const OAuthCallback: React.FC = () => {
       try {
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
-        const stateParam = params.get('state');
         const errorParam = params.get('error');
 
         if (errorParam) {
