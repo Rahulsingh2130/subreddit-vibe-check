@@ -13,7 +13,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onConfi
   const [clientId, setClientId] = useState('');
   const [clientSecret, setClientSecret] = useState('');
   const [redirectUri, setRedirectUri] = useState(
-    `${window.location.origin}/auth/callback`
+    typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : 'http://localhost:5173/auth/callback'
   );
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
